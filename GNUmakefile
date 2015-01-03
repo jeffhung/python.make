@@ -64,7 +64,6 @@ python-shell: python-runtime
 python-runtime: $(RUNTIME_DIR)/bin/python
 
 $(RUNTIME_DIR)/bin/python: $(CACHE_DIR)/virtualenv/virtualenv.py
-	# TODO: Replaces tar(1) with the built-in os.makedirs() function of python.
 	mkdir -p $(RUNTIME_DIR);
 	python $(CACHE_DIR)/virtualenv/virtualenv.py $(RUNTIME_DIR);
 
