@@ -1,8 +1,14 @@
-Python.Make - Makefile Module for Python Development
-====================================================
+Python.Make
+===========
 
-Build a local python development environment using [virtualenv](https://virtualenv.pypa.io/),
-and simplify [pip](https://pypi.python.org/pypi/pip) package management from outside.
+Python.Make is a `Makefile` module for python development that use
+[GNU make][gmake] to build a local python development environment
+using [virtualenv][virtualenv], and simplify [pip][pip] package
+management from outside.
+
+[virtualenv]: https://virtualenv.pypa.io/
+[pip]: https://pypi.python.org/pypi/pip
+[gmake]: http://www.gnu.org/software/make/
 
 Make targets are prefix with `python-` so you can use them easily with auto-completion:
 
@@ -26,7 +32,7 @@ Search pip modules in virtualenv:
 	ralc                      - Rate Calculator.
 	referral_candy            - ReferralCandy Python API Client
 
-Install any pip module you want in virtualenv:
+Install any pip module you want in virtualenv, with prefix `python-` added in front of package name:
 
 	$ make python-ralc
 	. ~/python.make/runtime/bin/activate; \
@@ -42,7 +48,7 @@ Install any pip module you want in virtualenv:
 	Successfully installed ralc
 	Cleaning up...
 
-Run any command in virtualenv:
+Run any command in virtualenv while using `--` to avoid options captured by `make`:
 
 	$ make python-run -- ralc 30 20
 	. ~/python.make/runtime/bin/activate; ralc 30 20;
@@ -56,6 +62,16 @@ List installed pip modules in virtualenv:
 	ralc (0.1)
 	setuptools (2.2)
 	wsgiref (0.1.2)
+
+Run python interactively with all modules you installed in local:
+
+	$ make python-shell
+	. ~/python.make/runtime/bin/activate; python;
+	Python 2.7.5 (default, Mar  9 2014, 22:15:05)
+	[GCC 4.2.1 Compatible Apple LLVM 5.0 (clang-500.0.68)] on darwin
+	Type "help", "copyright", "credits" or "license" for more information.
+	>>>
+
 
 See also:
 
