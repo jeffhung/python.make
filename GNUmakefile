@@ -168,6 +168,10 @@ endef
 #      accidentally overriding existing content, if there's any.
 # XXX  See http://stackoverflow.com/a/649462 for multiline variables in make.
 # TODO Use user.name and user.email settings in git config for default values.
+# XXX  Currently lice will be included in requirements.txt. We should install
+#      python-lice in another place to avoid polluting current virtualenv
+#      environment.
+# TODO Add license header in generated script files.
 .PHONY: python-module
 python-module:        ARGS          := $(filter-out python-module,$(MAKECMDGOALS))
 python-module:        name          := $(firstword $(ARGS))
@@ -177,12 +181,12 @@ python-module:        email         ?= $(shell git config user.email)
 python-module:        url           ?= https://github.com/$(shell git config github.user)/python-$(name)
 python-module:        summary       ?= The python module $(name)
 python-module:        description   ?=
-python-module:        license       ?= BSD
+python-module:        license       ?=
 python-module:        copyright     ?= Copyright (c) $(shell date +%Y), $(author)
 python-module: export INIT_PY       := $(PYTHON_MODULE_INIT_PY)
 python-module: export SETUP_PY      := $(PYTHON_MODULE_SETUP_PY)
 python-module: export MANIFEST_IN   := $(PYTHON_MODULE_MANIFEST_IN)
-python-module: python-freeze
+python-module: python-freeze python-lice
 	@echo "Making new python module '$(ARGS)'...";
 	mkdir -p $(name);
 	@echo "Generate $(name)/__init__.py";
@@ -191,4 +195,8 @@ python-module: python-freeze
 	@echo "$$SETUP_PY"      >> setup.py;
 	@echo "Generate MANIFEST.in";
 	@echo "$$MANIFEST_IN"   >> MANIFEST.in;
+ifneq ($(license),)
+	@echo "Generate LICENSE";
+	. $(RUNTIME_DIR)/bin/activate; lice -o "$(author)" -p $(name) $(license) > LICENSE;
+endif
 

@@ -103,6 +103,16 @@ value of your `user.name` git configuration. The `email` will be the value of
 your `user.email` git configuration. And `url` will be a github repository url
 composed by your github username and name of this new python module.
 
+By default `license` is empty. If `license` is empty, the new python module is
+considered a private work that all rights are reserved to the author (auto
+discovered or specified by the `author` parameter). Otherwise, a `LICENSE` file
+will be generated using the [lice][lice] tool.  That means the valid value of
+`license` parameter could be any of the followings: `agpl3`, `apache`, `bsd2`,
+`bsd3`, `cddl`, `cc0`, `epl`, `gpl2`, `gpl3`, `lgpl`, `mit`, or `mpl`.
+
+[lice]: https://pypi.python.org/pypi/lice
+
+
 See also:
 
   * [Virtualenv and Makefiles](http://blog.bottlepy.org/2012/07/16/virtualenv-and-makefiles.html)
