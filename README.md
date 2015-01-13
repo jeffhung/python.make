@@ -85,13 +85,14 @@ Create new module `foo` in current folder with module skeleton generated:
 	       url=https://github.com/jeffhung/python.make \
 	       summary='one line summary to describe this new module' \
 	       description='multiline description of this new module' \
-	       license=MIT copyright='blah~'
+	       license=mit copyright='blah~'
 	. ~/python.make/runtime/bin/activate; pip freeze > requirements.txt;
 	Making new python module 'foo'...
 	mkdir -p foo;
 	Generate foo/__init__.py
 	Generate setup.py
 	Generate MANIFEST.in
+	Generate LICENSE
 
 The `version`, `author`, `email`, `url`, `summary`, `description`, and
 `license` parameters are optional. Please specify them to override the default
