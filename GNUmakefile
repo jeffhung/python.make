@@ -81,7 +81,7 @@ $(CACHE_DIR)/virtualenv-$(VIRTUALENV_VERSION).tar.gz:
 # Only when the first goal is python-pip or python-run.
 # TODO: Maybe we can apply to all python-* goals.
 # XXX: if the goal is an existing file, will show the message: "make: `existing.json' is up to date."
-ifneq (,$(filter $(firstword $(MAKECMDGOALS)),python-pip python-run))
+ifneq (,$(filter $(firstword $(MAKECMDGOALS)),python-pip python-run python-module))
 %::
 	@:;
 endif
@@ -101,4 +101,94 @@ python-%: $(RUNTIME_DIR)/bin/python
 	. $(RUNTIME_DIR)/bin/activate; \
 	pip install --download-cache $(CACHE_DIR)/pip $(patsubst python-%,%,$@);
 
+.PHONY: python-freeze
+python-freeze:
+	. $(RUNTIME_DIR)/bin/activate; pip freeze > requirements.txt;
+
+define PYTHON_MODULE_INIT_PY
+# -*- coding: utf-8
+
+"""
+$(description)
+"""
+
+__version__     = '$(version)'
+__author__      = '$(author)'
+__email__       = '$(email)'
+__license__     = '$(license)'
+__copyright__   = '$(copyright)'
+
+if __name__ == '__main__':
+    pass
+
+endef
+
+define PYTHON_MODULE_SETUP_PY
+# -*- coding: utf-8
+
+from setuptools import setup, find_packages
+from pip.req import parse_requirements
+
+import $(name)
+
+setup(
+    name='$(name)',
+    version=$(name).__version__,
+    author=$(name).__author__,
+    author_email=$(name).__email__,
+    url='$(url)',
+    description='$(summary)',
+    long_description=$(name).__doc__,
+    packages=find_packages(),
+    install_requires=[str(r.req) for r in parse_requirements('requirements.txt')]
+    classifiers=[
+        'Development Status :: 1 - Planning',
+        'Environment :: Console',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: BSD License',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: Implementation :: PyPy',
+        'Topic :: Documentation',
+        'Topic :: Software Development :: Libraries :: Python Modules',
+    ]
+)
+
+endef
+
+define PYTHON_MODULE_MANIFEST_IN
+include requirements.txt
+
+endef
+
+# XXX  This will forbid installing the 'module' package.
+#      Please use `make python-pip install module` instead.
+# XXX  When creating the script files, here we use >> instead of > to prevent
+#      accidentally overriding existing content, if there's any.
+# XXX  See http://stackoverflow.com/a/649462 for multiline variables in make.
+# TODO Use user.name and user.email settings in git config for default values.
+.PHONY: python-module
+python-module:        ARGS          := $(filter-out python-module,$(MAKECMDGOALS))
+python-module:        name          := $(firstword $(ARGS))
+python-module:        version       ?= 0.0.1
+python-module:        author        ?= First Last
+python-module:        email         ?= first.last@example.com
+python-module:        url           ?=
+python-module:        summary       ?=
+python-module:        description   ?=
+python-module:        license       ?= BSD
+python-module:        copyright     ?= Copyright (c) $(shell date +%Y), $(author)
+python-module: export INIT_PY       := $(PYTHON_MODULE_INIT_PY)
+python-module: export SETUP_PY      := $(PYTHON_MODULE_SETUP_PY)
+python-module: export MANIFEST_IN   := $(PYTHON_MODULE_MANIFEST_IN)
+python-module: python-freeze
+	@echo "Making new python module '$(ARGS)'...";
+	mkdir -p $(name);
+	@echo "Generate $(name)/__init__.py";
+	@echo "$$INIT_PY"       >> $(name)/__init__.py;
+	@echo "Generate setup.py";
+	@echo "$$SETUP_PY"      >> setup.py;
+	@echo "Generate MANIFEST.in";
+	@echo "$$MANIFEST_IN"   >> MANIFEST.in;
 

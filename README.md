@@ -72,6 +72,31 @@ Run python interactively with all modules you installed in local:
 	Type "help", "copyright", "credits" or "license" for more information.
 	>>>
 
+Take a snapshot of current dependencies in `requirements.txt`:
+
+	$ make python-freeze
+	. ~/python.make/runtime/bin/activate; pip freeze > requirements.txt;
+
+Create new module `foo` in current folder with module skeleton generated:
+
+	$ make python-module foo \
+	       version=1.2.3 \
+	       author='Jeff Hung' email=name@example.com \
+	       url=https://github.com/jeffhung/python.make \
+	       summary='one line summary to describe this new module' \
+	       description='multiline description of this new module' \
+	       license=MIT copyright='blah~'
+	. ~/python.make/runtime/bin/activate; pip freeze > requirements.txt;
+	Making new python module 'foo'...
+	mkdir -p foo;
+	Generate foo/__init__.py
+	Generate setup.py
+	Generate MANIFEST.in
+
+The `version`, `author`, `email`, `url`, `summary`, `description`, and
+`license` parameters are optional. Please specify them to override the default
+values.
+
 
 See also:
 
