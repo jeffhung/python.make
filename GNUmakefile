@@ -172,10 +172,10 @@ endef
 python-module:        ARGS          := $(filter-out python-module,$(MAKECMDGOALS))
 python-module:        name          := $(firstword $(ARGS))
 python-module:        version       ?= 0.0.1
-python-module:        author        ?= First Last
-python-module:        email         ?= first.last@example.com
-python-module:        url           ?=
-python-module:        summary       ?=
+python-module:        author        ?= $(shell git config user.name)
+python-module:        email         ?= $(shell git config user.email)
+python-module:        url           ?= https://github.com/$(shell git config github.user)/python-$(name)
+python-module:        summary       ?= The python module $(name)
 python-module:        description   ?=
 python-module:        license       ?= BSD
 python-module:        copyright     ?= Copyright (c) $(shell date +%Y), $(author)

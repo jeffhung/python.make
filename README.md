@@ -97,6 +97,11 @@ The `version`, `author`, `email`, `url`, `summary`, `description`, and
 `license` parameters are optional. Please specify them to override the default
 values.
 
+By default the `author`, `email`, and `url` parameters will be automatically
+discovered from your git and github configurations. The `author` will be the
+value of your `user.name` git configuration. The `email` will be the value of
+your `user.email` git configuration. And `url` will be a github repository url
+composed by your github username and name of this new python module.
 
 See also:
 
