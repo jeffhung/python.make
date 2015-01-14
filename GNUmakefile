@@ -11,50 +11,41 @@ VIRTUALENV_URL      ?= https://pypi.python.org/packages/source/v/virtualenv/virt
 
 
 # ----------------------------------------------------------------------------
-# Basic targets
-# ----------------------------------------------------------------------------
-
-.PHONY: all
-all: help
-
-.PHONY: help
-help:
-	@echo "Usage: make [ TARGET ... ]";
-	@echo "";
-	@echo "TARGET:";
-	@echo "";
-	@echo "  help       - show this help message";
-	@echo "  runtime    - create the runtime environment";
-	@echo "  clean      - delete generated files";
-	@echo "";
-	@echo "Default TARGET is 'help'.";
-	@echo "";
-
-.PHONY: clean
-clean:
-
-.PHONY: distclean
-distclean: clean
-	rm -rf $(RUNTIME_DIR);
-#	rm -rf $(CACHE_DIR);
-
-
-# ----------------------------------------------------------------------------
 # Main targets
 # ----------------------------------------------------------------------------
 
-.PHONY: runtime
-runtime: python-runtime
-
-
-# ----------------------------------------------------------------------------
-# Special targets
-# ----------------------------------------------------------------------------
+.PHONY: all
+all: python-help
 
 
 # ----------------------------------------------------------------------------
 # Targets for building Python Development Environment
 # ----------------------------------------------------------------------------
+
+.PHONY: python-help
+python-help:
+	@echo "Usage: make [ TARGET ... ]";
+	@echo "";
+	@echo "These python-* make targets help you manage a python development environment";
+	@echo "in local via virtualenv(1) and pip(1) inside it.";
+	@echo "";
+	@echo "  python-help       - show this help message";
+	@echo "  python-runtime    - bootstrap a virtualenv runtime environment";
+	@echo "  python-destroy    - destroy the virtualenv runtime environment";
+	@echo "  python-pip        - run pip(1) command inside the virtualenv runtime";
+	@echo "  python-shell      - enter python shell inside the virtualenv runtime";
+	@echo "  python-run        - run shell commands inside the virtualenv runtime";
+	@echo "  python-%          - install the pip module which called %";
+	@echo "  python-freeze     - save installed pip modules in requirements.txt";
+	@echo "  python-module M   - generate boilerplate files for new module M";
+	@echo "";
+	@echo "The virtualenv (v$(VIRTUALENV_VERSION)) runtime environment is located at this path:";
+	@echo "  $(RUNTIME_DIR)";
+
+.PHONY: python-destroy
+python-destroy:
+	rm -rf $(RUNTIME_DIR);
+#	rm -rf $(CACHE_DIR);
 
 .PHONY: python-shell
 python-shell: python-runtime

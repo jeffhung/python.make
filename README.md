@@ -10,10 +10,13 @@ management from outside.
 [pip]: https://pypi.python.org/pypi/pip
 [gmake]: http://www.gnu.org/software/make/
 
+Assuming current folder is `~/python.make`.
+
 Make targets are prefix with `python-` so you can use them easily with auto-completion:
 
 	$ make python-<TAB>
-	python-%        python-pip      python-run      python-runtime  python-shell
+	python-%        python-freeze   python-module   python-run      python-shell
+	python-destroy  python-help     python-pip      python-runtime
 
 Bootstrap your development environment in local:
 
@@ -112,6 +115,11 @@ will be generated using the [lice][lice] tool.  That means the valid value of
 `bsd3`, `cddl`, `cc0`, `epl`, `gpl2`, `gpl3`, `lgpl`, `mit`, or `mpl`.
 
 [lice]: https://pypi.python.org/pypi/lice
+
+Destory and wipe out the local virtualenv runtime environment:
+
+	make python-destroy
+	rm -rf ~/python.make/runtime;
 
 
 See also:
