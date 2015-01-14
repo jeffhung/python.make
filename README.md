@@ -117,4 +117,5 @@ will be generated using the [lice][lice] tool.  That means the valid value of
 See also:
 
   * [Virtualenv and Makefiles](http://blog.bottlepy.org/2012/07/16/virtualenv-and-makefiles.html)
+  * [bootstrapper](https://pypi.python.org/pypi/bootstrapper)
 
