@@ -51,11 +51,11 @@ Install
 
 Copy the `python.make` file into the top-level folder of your project.
 
-Or download with [curl](http://curl.haxx.se/)(1) directly:
+Or download with [curl](http://curl.haxx.se/) directly:
 
 	curl -O https://raw.githubusercontent.com/jeffhung/python.make/master/python.make
 
-Or with [wget](https://www.gnu.org/software/wget/)(1):
+Or with [wget](https://www.gnu.org/software/wget/):
 
 	wget https://raw.githubusercontent.com/jeffhung/python.make/master/python.make
 
