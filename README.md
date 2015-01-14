@@ -41,13 +41,16 @@ targets in:
 	.PHONY: all
 	all: python-help
 	
+	...
+	
 	include python.make
 
 
 Targets
 -------
 
-Assuming current folder is `~/work` and have merged `python.make` make targets in.
+Assumes the current folder is `~/work` and have merged `python.make` make
+targets in.
 
 The make targets provided by `python.make` are prefixed with `python-` so you
 can use them easily with auto-completion:
