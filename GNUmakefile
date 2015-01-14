@@ -186,7 +186,8 @@ python-module:        copyright     ?= Copyright (c) $(shell date +%Y), $(author
 python-module: export INIT_PY       := $(PYTHON_MODULE_INIT_PY)
 python-module: export SETUP_PY      := $(PYTHON_MODULE_SETUP_PY)
 python-module: export MANIFEST_IN   := $(PYTHON_MODULE_MANIFEST_IN)
-python-module: python-freeze python-lice
+python-module: python-freeze
+	$(MAKE) python-lice;
 	@echo "Making new python module '$(ARGS)'...";
 	mkdir -p $(name);
 	@echo "Generate $(name)/__init__.py";
