@@ -27,7 +27,7 @@ Use the `-f` option to load and use `python.make`:
 	  python-destroy    - destroy the virtualenv runtime environment
 	  python-pip        - run pip(1) command inside the virtualenv runtime
 	  python-shell      - enter python shell inside the virtualenv runtime
-	  python-run        - run shell commands inside the virtualenv runtime
+	  python-exec       - run shell commands inside the virtualenv runtime
 	  python-%          - install the pip module which called %
 	  python-freeze     - save installed pip modules in requirements.txt
 	  python-module M   - generate boilerplate files for new module M
@@ -70,8 +70,8 @@ The make targets provided by `python.make` are prefixed with `python-` so you
 can use them easily with auto-completion:
 
 	$ make python-<TAB>
-	python-%        python-freeze   python-module   python-run      python-shell
-	python-destroy  python-help     python-pip      python-runtime
+	python-%        python-exec     python-help     python-pip      python-shell
+	python-destroy  python-freeze   python-module   python-runtime
 
 ### python-help
 
@@ -127,11 +127,11 @@ Install any pip module you want in virtualenv, with prefix `python-` added in fr
 	Successfully installed ralc
 	Cleaning up...
 
-### python-run
+### python-exec
 
 Run any command in virtualenv while using `--` to avoid options captured by `make`:
 
-	$ make python-run -- ralc 30 20
+	$ make python-exec -- ralc 30 20
 	. ~/work/runtime/bin/activate; ralc 30 20;
 	> 30.00 x 20.00 = 600.00
 

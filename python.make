@@ -25,7 +25,7 @@ python-help:
 	@echo "  python-destroy    - destroy the virtualenv runtime environment";
 	@echo "  python-pip        - run pip(1) command inside the virtualenv runtime";
 	@echo "  python-shell      - enter python shell inside the virtualenv runtime";
-	@echo "  python-run        - run shell commands inside the virtualenv runtime";
+	@echo "  python-exec       - run shell commands inside the virtualenv runtime";
 	@echo "  python-%          - install the pip module which called %";
 	@echo "  python-freeze     - save installed pip modules in requirements.txt";
 	@echo "  python-module M   - generate boilerplate files for new module M";
@@ -60,18 +60,18 @@ $(PYTHON_CACHE_DIR)/virtualenv-$(VIRTUALENV_VERSION).tar.gz:
 	cd $(PYTHON_CACHE_DIR); curl --remote-name $(VIRTUALENV_URL);
 
 # Eliminate the error message: "make: *** No rule to make target `..'.  Stop."
-# Only when the first goal is python-pip or python-run.
+# Only when the first goal is python-pip or python-exec.
 # TODO: Maybe we can apply to all python-* goals.
 # XXX: if the goal is an existing file, will show the message: "make: `existing.json' is up to date."
-ifneq (,$(filter $(firstword $(MAKECMDGOALS)),python-pip python-run python-module))
+ifneq (,$(filter $(firstword $(MAKECMDGOALS)),python-pip python-exec python-module))
 %::
 	@:;
 endif
 
-# XXX: Need to use `make python-run -- --version` to specify options to python programs.
-.PHONY: python-run
-python-run: COMMAND := $(filter-out python-run,$(MAKECMDGOALS))
-python-run:
+# XXX: Need to use `make python-exec -- --version` to specify options to python programs.
+.PHONY: python-exec
+python-exec: COMMAND := $(filter-out python-exec,$(MAKECMDGOALS))
+python-exec:
 	. $(PYTHON_RUNTIME_DIR)/bin/activate; $(COMMAND);
 
 .PHONY: python-pip
