@@ -2,9 +2,8 @@
 # Configurations
 # ----------------------------------------------------------------------------
 
-TOP_DIR             ?= $(abspath .)
-RUNTIME_DIR         ?= $(TOP_DIR)/runtime
-CACHE_DIR           ?= $(TOP_DIR)/.cache
+PYTHON_RUNTIME_DIR  ?= $(abspath runtime)
+PYTHON_CACHE_DIR    ?= $(abspath .cache)
 
 VIRTUALENV_VERSION  ?= 1.11.4
 VIRTUALENV_URL      ?= https://pypi.python.org/packages/source/v/virtualenv/virtualenv-$(VIRTUALENV_VERSION).tar.gz
@@ -32,33 +31,33 @@ python-help:
 	@echo "  python-module M   - generate boilerplate files for new module M";
 	@echo "";
 	@echo "The virtualenv (v$(VIRTUALENV_VERSION)) runtime environment is located at this path:";
-	@echo "  $(RUNTIME_DIR)";
+	@echo "  $(PYTHON_RUNTIME_DIR)";
 
 .PHONY: python-destroy
 python-destroy:
-	rm -rf $(RUNTIME_DIR);
-#	rm -rf $(CACHE_DIR);
+	rm -rf $(PYTHON_RUNTIME_DIR);
+#	rm -rf $(PYTHON_CACHE_DIR);
 
 .PHONY: python-shell
 python-shell: python-runtime
-	. $(RUNTIME_DIR)/bin/activate; python;
+	. $(PYTHON_RUNTIME_DIR)/bin/activate; python;
 
 .PHONY: python-runtime
-python-runtime: $(RUNTIME_DIR)/bin/python
+python-runtime: $(PYTHON_RUNTIME_DIR)/bin/python
 
-$(RUNTIME_DIR)/bin/python: $(CACHE_DIR)/virtualenv/virtualenv.py
-	mkdir -p $(RUNTIME_DIR);
-	python $(CACHE_DIR)/virtualenv/virtualenv.py $(RUNTIME_DIR);
+$(PYTHON_RUNTIME_DIR)/bin/python: $(PYTHON_CACHE_DIR)/virtualenv/virtualenv.py
+	mkdir -p $(PYTHON_RUNTIME_DIR);
+	python $(PYTHON_CACHE_DIR)/virtualenv/virtualenv.py $(PYTHON_RUNTIME_DIR);
 
-$(CACHE_DIR)/virtualenv/virtualenv.py: $(CACHE_DIR)/virtualenv-$(VIRTUALENV_VERSION).tar.gz
-	mkdir -p $(CACHE_DIR)/virtualenv;
+$(PYTHON_CACHE_DIR)/virtualenv/virtualenv.py: $(PYTHON_CACHE_DIR)/virtualenv-$(VIRTUALENV_VERSION).tar.gz
+	mkdir -p $(PYTHON_CACHE_DIR)/virtualenv;
 	# TODO: Replaces tar(1) with the built-in tarfile module of python.
-	tar -zmx -C $(CACHE_DIR)/virtualenv --strip-components 1 -f $<;
+	tar -zmx -C $(PYTHON_CACHE_DIR)/virtualenv --strip-components 1 -f $<;
 
-$(CACHE_DIR)/virtualenv-$(VIRTUALENV_VERSION).tar.gz:
+$(PYTHON_CACHE_DIR)/virtualenv-$(VIRTUALENV_VERSION).tar.gz:
 	# TODO: Replaces curl(1) with the built-in urllib2 module of python.
-	mkdir -p $(CACHE_DIR);
-	cd $(CACHE_DIR); curl --remote-name $(VIRTUALENV_URL);
+	mkdir -p $(PYTHON_CACHE_DIR);
+	cd $(PYTHON_CACHE_DIR); curl --remote-name $(VIRTUALENV_URL);
 
 # Eliminate the error message: "make: *** No rule to make target `..'.  Stop."
 # Only when the first goal is python-pip or python-run.
@@ -73,20 +72,20 @@ endif
 .PHONY: python-run
 python-run: COMMAND := $(filter-out python-run,$(MAKECMDGOALS))
 python-run:
-	. $(RUNTIME_DIR)/bin/activate; $(COMMAND);
+	. $(PYTHON_RUNTIME_DIR)/bin/activate; $(COMMAND);
 
 .PHONY: python-pip
 python-pip: ARGS := $(filter-out python-pip,$(MAKECMDGOALS))
 python-pip:
-	. $(RUNTIME_DIR)/bin/activate; pip $(ARGS);
+	. $(PYTHON_RUNTIME_DIR)/bin/activate; pip $(ARGS);
 
-python-%: $(RUNTIME_DIR)/bin/python
-	. $(RUNTIME_DIR)/bin/activate; \
-	pip install --download-cache $(CACHE_DIR)/pip $(patsubst python-%,%,$@);
+python-%: $(PYTHON_RUNTIME_DIR)/bin/python
+	. $(PYTHON_RUNTIME_DIR)/bin/activate; \
+	pip install --download-cache $(PYTHON_CACHE_DIR)/pip $(patsubst python-%,%,$@);
 
 .PHONY: python-freeze
 python-freeze:
-	. $(RUNTIME_DIR)/bin/activate; pip freeze > requirements.txt;
+	. $(PYTHON_RUNTIME_DIR)/bin/activate; pip freeze > requirements.txt;
 
 define PYTHON_MODULE_INIT_PY
 # -*- coding: utf-8
@@ -181,6 +180,6 @@ python-module: python-freeze
 	@echo "$$MANIFEST_IN"   >> MANIFEST.in;
 ifneq ($(license),)
 	@echo "Generate LICENSE";
-	. $(RUNTIME_DIR)/bin/activate; lice -o "$(author)" -p $(name) $(license) > LICENSE;
+	. $(PYTHON_RUNTIME_DIR)/bin/activate; lice -o "$(author)" -p $(name) $(license) > LICENSE;
 endif
 
