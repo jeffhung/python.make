@@ -90,6 +90,42 @@ Bootstrap your development environment in local:
 	New python executable in ~/work/runtime/bin/python
 	Installing setuptools, pip...done.
 
+If there is Python 3 in your base environment and the python executable is
+`python3`, you may build the runtime with it:
+
+	$ make VIRTUALENV_OPTS="--python=python3" python-runtime
+	mkdir -p /vagrant/python-make/runtime;
+	python /vagrant/python-make/.cache/virtualenv/virtualenv.py --python=python3 /vagrant/python-make/runtime;
+	Running virtualenv with interpreter /usr/bin/python3
+	Using base prefix '/usr'
+	New python executable in ~/work/runtime/bin/python3
+	Also creating executable in ~/work/runtime/bin/python
+	Installing setuptools, pip...done.
+
+By default the base python environment in the created runtime will be the
+interpreter that virtualenv was invoked with. So you can do this instead:
+
+	$ make VIRTUALENV_RUN_BY=python3 python-runtime
+	mkdir -p /vagrant/python-make/runtime;
+	python3 /vagrant/python-make/.cache/virtualenv/virtualenv.py  /vagrant/python-make/runtime;
+	Using base prefix '/usr'
+	New python executable in ~/work/runtime/bin/python3
+	Also creating executable in ~/work/runtime/bin/python
+	Installing setuptools, pip...done.
+
+With this tweak, you can build the runtime with customized python version other
+than the system one:
+
+	$ python --version
+	Python 2.7.6
+	$ python3 --version
+	Python 3.4.0
+	$ source runtime/bin/activate
+	(runtime)$ python --version
+	Python 3.4.0
+
+However, you will have to maintain the custom python base runtime by your self.
+
 ### python-pip
 
 Search pip modules in virtualenv:

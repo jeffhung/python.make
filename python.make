@@ -36,6 +36,9 @@ PYTHON_CACHE_DIR    ?= $(abspath .cache)
 VIRTUALENV_VERSION  ?= 1.11.4
 VIRTUALENV_URL      ?= https://pypi.python.org/packages/source/v/virtualenv/virtualenv-$(VIRTUALENV_VERSION).tar.gz
 
+VIRTUALENV_RUN_BY   ?= python
+VIRTUALENV_OPTS     ?=
+
 
 # ----------------------------------------------------------------------------
 # Make targets of python.make
@@ -75,7 +78,7 @@ python-runtime: $(PYTHON_RUNTIME_DIR)/bin/python
 
 $(PYTHON_RUNTIME_DIR)/bin/python: $(PYTHON_CACHE_DIR)/virtualenv/virtualenv.py
 	mkdir -p $(PYTHON_RUNTIME_DIR);
-	python $(PYTHON_CACHE_DIR)/virtualenv/virtualenv.py $(PYTHON_RUNTIME_DIR);
+	$(VIRTUALENV_RUN_BY) $(PYTHON_CACHE_DIR)/virtualenv/virtualenv.py $(VIRTUALENV_OPTS) $(PYTHON_RUNTIME_DIR);
 
 $(PYTHON_CACHE_DIR)/virtualenv/virtualenv.py: $(PYTHON_CACHE_DIR)/virtualenv-$(VIRTUALENV_VERSION).tar.gz
 	mkdir -p $(PYTHON_CACHE_DIR)/virtualenv;
