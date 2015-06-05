@@ -57,7 +57,7 @@ Or download with [curl](http://curl.haxx.se/) directly:
 
 Or with [wget](https://www.gnu.org/software/wget/):
 
-	wget https://bit.ly/python-make
+	wget --content-disposition https://bit.ly/python-make
 
 
 Targets
