@@ -53,7 +53,7 @@ Copy the `python.make` file into the top-level folder of your project.
 
 Or download with [curl](http://curl.haxx.se/) directly:
 
-	curl -LO https://bit.ly/python-make
+	curl -L -o python.make https://bit.ly/python-make
 
 Or with [wget](https://www.gnu.org/software/wget/):
 
