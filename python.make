@@ -200,7 +200,7 @@ python-module: export INIT_PY       := $(PYTHON_MODULE_INIT_PY)
 python-module: export SETUP_PY      := $(PYTHON_MODULE_SETUP_PY)
 python-module: export MANIFEST_IN   := $(PYTHON_MODULE_MANIFEST_IN)
 python-module: python-freeze
-	$(MAKE) python-lice;
+	$(MAKE) -f $(firstword $(MAKEFILE_LIST)) python-lice;
 	@echo "Making new python module '$(ARGS)'...";
 	mkdir -p $(name);
 	@echo "Generate $(name)/__init__.py";
