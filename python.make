@@ -214,3 +214,42 @@ ifneq ($(license),)
 	. $(PYTHON_RUNTIME_DIR)/bin/activate; lice -o "$(author)" -p $(name) $(license) > LICENSE;
 endif
 
+
+# ----------------------------------------------------------------------------
+# Packaging RPM from PyPI
+# ----------------------------------------------------------------------------
+
+# See: http://stackoverflow.com/a/3710342
+first-letter = $(strip $(foreach a,a b c d e f g h i j k l m n o p q r s t u v w x y z,$(if $(1:$a%=),,$a)))
+
+# See: http://stackoverflow.com/a/665045
+lc = $(subst A,a,$(subst B,b,$(subst C,c,$(subst D,d,$(subst E,e,$(subst F,f,$(subst G,g,$(subst H,h,$(subst I,i,$(subst J,j,$(subst K,k,$(subst L,l,$(subst M,m,$(subst N,n,$(subst O,o,$(subst P,p,$(subst Q,q,$(subst R,r,$(subst S,s,$(subst T,t,$(subst U,u,$(subst V,v,$(subst W,w,$(subst X,x,$(subst Y,y,$(subst Z,z,$1))))))))))))))))))))))))))
+
+PYPI_FILES_DIR ?= files
+PYPI_WGET_OPTS ?= --no-check-certificate
+
+## For example:
+## $ make pypi-to-rpm PYPI_PKG_NAME=livereload PYPI_PKG_VERSION=2.4.1
+##
+## You will need to preinstall rpm-build, python-setuptools, and any BuildRequired packages.
+##
+.PHONY: pypi-to-rpm
+pypi-to-rpm: export RPM_DISTS_DIR := $(PYPI_FILES_DIR)
+pypi-to-rpm: export RPM_NAME      := python-$(subst _,-,$(call lc,$(PYPI_PKG_NAME)))
+pypi-to-rpm: export RPM_VERSION   := $(PYPI_PKG_VERSION)
+pypi-to-rpm: export RPM_PACKER    :=
+pypi-to-rpm: export RPM_SOURCE0   := $(PYPI_FILES_DIR)/$(PYPI_PKG_NAME)-$(PYPI_PKG_VERSION).tar.gz
+pypi-to-rpm: export RPM_BUILD_DIR := /tmp/rpm-make
+pypi-to-rpm: rpm.make
+	$(if $(PYPI_PKG_NAME),,   $(error "Missing PYPI_PKG_NAME"))
+	$(if $(PYPI_PKG_VERSION),,$(error "Missing PYPI_PKG_VERSION"))
+	# Download source tarball from PyPI
+	[ -f $(RPM_DISTS_DIR)/$(PYPI_PKG_NAME)-$(PYPI_PKG_VERSION).tar.gz ] \
+	|| wget $(PYPI_WGET_OPTS) -P $(RPM_DISTS_DIR)/ \
+	        https://pypi.python.org/packages/source/$(call first-letter,$(PYPI_PKG_NAME))/$(PYPI_PKG_NAME)/$(PYPI_PKG_NAME)-$(PYPI_PKG_VERSION).tar.gz
+	# Build the RPM
+	$(MAKE) -f rpm.make rpm-pack;
+
+rpm.make:
+	curl -L -o rpm.make https://bit.ly/rpm-make;
+
