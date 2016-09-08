@@ -244,7 +244,7 @@ pypi-to-rpm: rpm.make
 	$(if $(PYPI_PKG_NAME),,   $(error "Missing PYPI_PKG_NAME"))
 	$(if $(PYPI_PKG_VERSION),,$(error "Missing PYPI_PKG_VERSION"))
 	# Download source tarball from PyPI
-	$(MAKE) $(PYPI_FILES_DIR)/$(PYPI_PKG_NAME)-$(PYPI_PKG_VERSION).tar.gz
+	$(MAKE) -f $(firstword $(MAKEFILE_LIST)) $(PYPI_FILES_DIR)/$(PYPI_PKG_NAME)-$(PYPI_PKG_VERSION).tar.gz
 	# Build the RPM
 	$(MAKE) -f rpm.make rpm-pack;
 
