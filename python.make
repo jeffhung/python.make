@@ -244,12 +244,22 @@ pypi-to-rpm: rpm.make
 	$(if $(PYPI_PKG_NAME),,   $(error "Missing PYPI_PKG_NAME"))
 	$(if $(PYPI_PKG_VERSION),,$(error "Missing PYPI_PKG_VERSION"))
 	# Download source tarball from PyPI
-	[ -f $(RPM_DISTS_DIR)/$(PYPI_PKG_NAME)-$(PYPI_PKG_VERSION).tar.gz ] \
-	|| wget $(PYPI_WGET_OPTS) -P $(RPM_DISTS_DIR)/ \
-	        https://pypi.python.org/packages/source/$(call first-letter,$(PYPI_PKG_NAME))/$(PYPI_PKG_NAME)/$(PYPI_PKG_NAME)-$(PYPI_PKG_VERSION).tar.gz
+	$(MAKE) $(PYPI_FILES_DIR)/$(PYPI_PKG_NAME)-$(PYPI_PKG_VERSION).tar.gz
 	# Build the RPM
 	$(MAKE) -f rpm.make rpm-pack;
 
 rpm.make:
 	curl -L -o rpm.make https://bit.ly/rpm-make;
+
+$(PYPI_FILES_DIR)/$(PYPI_PKG_NAME)-$(PYPI_PKG_VERSION).tar.gz:
+	$(if $(PYPI_FILES_DIR),,  $(error "Missing PYPI_FILES_DIR"))
+	$(if $(PYPI_PKG_NAME),,   $(error "Missing PYPI_PKG_NAME"))
+	$(if $(PYPI_PKG_VERSION),,$(error "Missing PYPI_PKG_VERSION"))
+	# Download source tarball from PyPI
+	mkdir -p $(PYPI_FILES_DIR);
+	PYPI_PKG_URL=`wget $(PYPI_WGET_OPTS) -O- https://pypi.python.org/simple/$(PYPI_PKG_NAME)/ \
+	| sed -e 's,</h1>,\n,' | grep '^<a href=' \
+	| grep $(PYPI_PKG_NAME)-$(PYPI_PKG_VERSION).tar.gz \
+	| sed -e 's,^[^"]*",,' -e 's,".*$$,,' -e 's,^,https://pypi.python.org/packages/source/,'`; \
+	wget $(PYPI_WGET_OPTS) -P $(PYPI_FILES_DIR) "$$PYPI_PKG_URL";
 
