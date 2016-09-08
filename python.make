@@ -189,9 +189,9 @@ endef
 python-module:        ARGS          := $(filter-out python-module,$(MAKECMDGOALS))
 python-module:        name          := $(firstword $(ARGS))
 python-module:        version       ?= 0.0.1
-python-module:        author        ?= $(shell git config user.name)
-python-module:        email         ?= $(shell git config user.email)
-python-module:        url           ?= https://github.com/$(shell git config github.user)/python-$(name)
+python-module:        author        ?= $(if $(shell which git 2> /dev/null),$(shell git config user.name))
+python-module:        email         ?= $(if $(shell which git 2> /dev/null),$(shell git config user.email))
+python-module:        url           ?= $(if $(shell which git 2> /dev/null),https://github.com/$(shell git config github.user)/python-$(name))
 python-module:        summary       ?= The python module $(name)
 python-module:        description   ?=
 python-module:        license       ?=
