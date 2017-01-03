@@ -39,6 +39,8 @@ VIRTUALENV_URL      ?= https://pypi.python.org/packages/source/v/virtualenv/virt
 VIRTUALENV_RUN_BY   ?= python
 VIRTUALENV_OPTS     ?=
 
+PYTHON_PIP_CACHE_OPT += $(if $(shell [ `pip --version | cut -d\  -f2 | cut -d. -f1` -ge 8 ] && echo true),--cache-dir,--download-cache) $(PYTHON_CACHE_DIR)/pip
+
 
 # ----------------------------------------------------------------------------
 # Make targets of python.make
@@ -112,7 +114,7 @@ python-pip:
 
 python-%: $(PYTHON_RUNTIME_DIR)/bin/python
 	. $(PYTHON_RUNTIME_DIR)/bin/activate; \
-	pip install --download-cache $(PYTHON_CACHE_DIR)/pip $(patsubst python-%,%,$@);
+	pip install $(PYTHON_PIP_CACHE_OPT) $(patsubst python-%,%,$@);
 
 .PHONY: python-freeze
 python-freeze:
