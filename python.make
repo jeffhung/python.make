@@ -39,7 +39,7 @@ VIRTUALENV_URL      ?= https://pypi.python.org/packages/source/v/virtualenv/virt
 VIRTUALENV_RUN_BY   ?= python
 VIRTUALENV_OPTS     ?=
 
-PYTHON_PIP_CACHE_OPT += $(if $(shell [ `pip --version | cut -d\  -f2 | cut -d. -f1` -ge 8 ] && echo true),--cache-dir,--download-cache) $(PYTHON_CACHE_DIR)/pip
+PYTHON_PIP_CACHE_OPT += $(if $(shell [ `$(PYTHON_RUNTIME_DIR)/bin/pip --version | cut -d\  -f2 | cut -d. -f1` -ge 8 ] && echo true),--cache-dir,--download-cache) $(PYTHON_CACHE_DIR)/pip
 
 
 # ----------------------------------------------------------------------------
