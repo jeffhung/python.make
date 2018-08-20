@@ -33,7 +33,7 @@
 PYTHON_RUNTIME_DIR  ?= $(abspath runtime)
 PYTHON_CACHE_DIR    ?= $(abspath .cache)
 
-VIRTUALENV_VERSION  ?= 1.11.4
+VIRTUALENV_VERSION  ?= 16.0.0
 VIRTUALENV_URL      ?= https://pypi.python.org/packages/source/v/virtualenv/virtualenv-$(VIRTUALENV_VERSION).tar.gz
 
 VIRTUALENV_RUN_BY   ?= python
@@ -90,7 +90,7 @@ $(PYTHON_CACHE_DIR)/virtualenv/virtualenv.py: $(PYTHON_CACHE_DIR)/virtualenv-$(V
 $(PYTHON_CACHE_DIR)/virtualenv-$(VIRTUALENV_VERSION).tar.gz:
 	# TODO: Replaces curl(1) with the built-in urllib2 module of python.
 	mkdir -p $(PYTHON_CACHE_DIR);
-	cd $(PYTHON_CACHE_DIR); curl --remote-name $(VIRTUALENV_URL);
+	cd $(PYTHON_CACHE_DIR); curl -L --remote-name $(VIRTUALENV_URL);
 
 # Eliminate the error message: "make: *** No rule to make target `..'.  Stop."
 # Only when the first goal is python-pip or python-exec.
