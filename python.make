@@ -62,6 +62,9 @@ python-help:
 	@echo "  python-%          - install the pip module which called %";
 	@echo "  python-freeze     - save installed pip modules in requirements.txt";
 	@echo "  python-module M   - generate boilerplate files for new module M";
+	@echo ""
+	@echo "  python3-runtime   - bootstrap python3 virtualenv runtime environment";
+	@echo "";
 	@echo "";
 	@echo "The virtualenv (v$(VIRTUALENV_VERSION)) runtime environment is located at this path:";
 	@echo "  $(PYTHON_RUNTIME_DIR)";
@@ -74,6 +77,10 @@ python-destroy:
 .PHONY: python-shell
 python-shell: python-runtime
 	. $(PYTHON_RUNTIME_DIR)/bin/activate; python;
+
+.PHONY: python3-runtime
+python3-runtime:
+	$(MAKE) VIRTUALENV_OPTS=--python=python3 python-runtime
 
 .PHONY: python-runtime
 python-runtime: $(PYTHON_RUNTIME_DIR)/bin/python
