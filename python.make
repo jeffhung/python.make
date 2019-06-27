@@ -79,8 +79,8 @@ python-shell: python-runtime
 	. $(PYTHON_RUNTIME_DIR)/bin/activate; python;
 
 .PHONY: python3-runtime
-python3-runtime:
-	$(MAKE) VIRTUALENV_OPTS=--python=python3 python-runtime
+python3-runtime: export VIRTUALENV_OPTS += --python=python3
+python3-runtime: python-runtime
 
 .PHONY: python-runtime
 python-runtime: $(PYTHON_RUNTIME_DIR)/bin/python
