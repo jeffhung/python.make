@@ -1,4 +1,4 @@
-language: python
+language: minimal
 python:
   - "2.7"
 before_install:
