@@ -9,6 +9,18 @@
 .PHONY: all
 all:
 
+.PHONY: clean
+clean:
+	$(MAKE) -C tests clean
+
+.PHONY: distclean
+distclean: clean
+	$(MAKE) -C tests distclean
+
+.PHONY: test
+test:
+	$(MAKE) -C tests test
+
 ifneq (,$(wildcard python.make))
 include python.make
 else

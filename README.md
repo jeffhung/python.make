@@ -1,6 +1,8 @@
 python.make
 ===========
 
+[![Build Status](https://travis-ci.com/jeffhung/python.make.svg?branch=master)](https://travis-ci.com/jeffhung/python.make)
+
 The `python.make` file is a `Makefile` module for python development that use
 [GNU make][gmake] to build a local python development environment using
 [virtualenv][virtualenv], and simplify [pip][pip] package management from

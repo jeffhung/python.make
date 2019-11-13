@@ -1,0 +1,7 @@
+language: minimal
+python:
+  - "2.7"
+before_install:
+  - python --version
+script: make test
+
