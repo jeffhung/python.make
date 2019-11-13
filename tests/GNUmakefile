@@ -31,7 +31,7 @@ shunit2: shunit2-$(SHUNIT2_VERSION)
 	ln -sf shunit2-$(SHUNIT2_VERSION) shunit2;
 
 shunit2-$(SHUNIT2_VERSION): shunit2-$(SHUNIT2_VERSION).zip
-	unzip shunit2-$(SHUNIT2_VERSION).zip;
+	unzip -q shunit2-$(SHUNIT2_VERSION).zip;
 
 shunit2-$(SHUNIT2_VERSION).zip:
 	wget --content-disposition $(SHUNIT2_URL)  # will download shunit2-$(SHUNIT2_VERSION).zip
