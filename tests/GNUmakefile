@@ -26,8 +26,9 @@ SHUNIT2_URL     = https://github.com/kward/shunit2/archive/v$(SHUNIT2_VERSION).z
 
 .PHONY: shunit2
 shunit2: shunit2-$(SHUNIT2_VERSION).zip
-	unzip -qf shunit2-$(SHUNIT2_VERSION).zip
+	unzip -f shunit2-$(SHUNIT2_VERSION).zip
 	ln -sf shunit2-$(SHUNIT2_VERSION) shunit2
+	ls *
 
 shunit2-$(SHUNIT2_VERSION).zip:
 	wget --content-disposition $(SHUNIT2_URL)  # will download shunit2-$(SHUNIT2_VERSION).zip
