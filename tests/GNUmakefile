@@ -16,7 +16,7 @@ distclean: clean
 	rm -rf shunit2-$(SHUNIT2_VERSION).zip;
 
 .PHONY: test
-test: shunit2
+test: prepare-shunit2
 	./runtime_test.sh
 
 # ---------------------------------------------------------------------------
@@ -24,11 +24,14 @@ test: shunit2
 SHUNIT2_VERSION = 2.1.7
 SHUNIT2_URL     = https://github.com/kward/shunit2/archive/v$(SHUNIT2_VERSION).zip
 
-.PHONY: shunit2
-shunit2: shunit2-$(SHUNIT2_VERSION).zip
-	unzip -f shunit2-$(SHUNIT2_VERSION).zip
-	ln -sf shunit2-$(SHUNIT2_VERSION) shunit2
-	ls *
+.PHONY: prepare-shunit2
+prepare-shunit2: shunit2
+
+shunit2: shunit2-$(SHUNIT2_VERSION)
+	ln -sf shunit2-$(SHUNIT2_VERSION) shunit2;
+
+shunit2-$(SHUNIT2_VERSION): shunit2-$(SHUNIT2_VERSION).zip
+	unzip shunit2-$(SHUNIT2_VERSION).zip;
 
 shunit2-$(SHUNIT2_VERSION).zip:
 	wget --content-disposition $(SHUNIT2_URL)  # will download shunit2-$(SHUNIT2_VERSION).zip
