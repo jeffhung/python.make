@@ -16,8 +16,9 @@ distclean: clean
 	rm -rf shunit2-$(SHUNIT2_VERSION).zip;
 
 .PHONY: test
+test: export PYTHON_CACHE_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST)))).cache
 test: prepare-shunit2
-	./runtime_test.sh
+	LIB_DIR=shunit2/lib shunit2/test_runner -s /bin/bash
 
 # ---------------------------------------------------------------------------
 
@@ -27,14 +28,8 @@ SHUNIT2_URL     = https://github.com/kward/shunit2/archive/v$(SHUNIT2_VERSION).z
 .PHONY: prepare-shunit2
 prepare-shunit2: shunit2
 
-shunit2: shunit2-$(SHUNIT2_VERSION)
-	ln -sf shunit2-$(SHUNIT2_VERSION) shunit2;
-
-shunit2-$(SHUNIT2_VERSION): shunit2-$(SHUNIT2_VERSION).zip
+shunit2:
+	wget --content-disposition $(SHUNIT2_URL);  # will download shunit2-$(SHUNIT2_VERSION).zip
 	unzip -q shunit2-$(SHUNIT2_VERSION).zip;
-
-shunit2-$(SHUNIT2_VERSION).zip:
-	wget --content-disposition $(SHUNIT2_URL)  # will download shunit2-$(SHUNIT2_VERSION).zip
-#	tar -xf $(TOP_3RDPARTY_DIR)/shunit2-2.1.5.tgz;
-#	( cd shunit2-*; patch -p0 < $(TOP_3RDPARTY_DIR)/shunit2-xml.patch; )
+	ln -sf shunit2-$(SHUNIT2_VERSION) shunit2;
 

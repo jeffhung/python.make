@@ -99,14 +99,22 @@ $(PYTHON_CACHE_DIR)/virtualenv-$(VIRTUALENV_VERSION).tar.gz:
 	mkdir -p $(PYTHON_CACHE_DIR);
 	cd $(PYTHON_CACHE_DIR); curl -L --remote-name $(VIRTUALENV_URL);
 
-# Eliminate the error message: "make: *** No rule to make target `..'.  Stop."
 # Only when the first goal is python-pip or python-exec.
 # TODO: Maybe we can apply to all python-* goals.
-# XXX: if the goal is an existing file, will show the message: "make: `existing.json' is up to date."
 ifneq (,$(filter $(firstword $(MAKECMDGOALS)),python-pip python-exec python-module))
+# Eliminate the error message: "make: *** No rule to make target `..'.  Stop."
+# XXX: if the goal is an existing file, will show the message: "make: `existing.json' is up to date."
 %::
 	@:;
+
+define PYTHON_DISABLE_TARGETS
+.PHONY: $(1)
+$(1):
+	@:;
+endef
+$(foreach t,$(filter-out python-pip,$(MAKECMDGOALS)),$(eval $(call PYTHON_DISABLE_TARGETS,$(t))))
 endif
+
 
 # XXX: Need to use `make python-exec -- --version` to specify options to python programs.
 .PHONY: python-exec
