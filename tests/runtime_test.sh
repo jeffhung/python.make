@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 test_make_python_runtime() {
 	workdir=`mktemp -d tmp.XXX`;
