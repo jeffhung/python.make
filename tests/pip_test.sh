@@ -1,7 +1,7 @@
 #!/bin/bash
 
 test_pip_search_ralc_not_target() {
-	workdir=`mktemp -d tmp.${FUNCNAME[0]}.XX`;  # $workdir will be available globally
+	workdir=`mktemp -d tmp.${FUNCNAME[0]}.XXX`;  # $workdir will be available globally
 	cp ../python.make $workdir/;
 	echo "include python.make" > $workdir/GNUmakefile;
 	pushd $workdir;
@@ -15,7 +15,7 @@ test_pip_search_ralc_not_target() {
 }
 
 test_pip_search_ralc_is_target() {
-	workdir=`mktemp -d tmp.${FUNCNAME[0]}.XX`;  # $workdir will be available globally
+	workdir=`mktemp -d tmp.${FUNCNAME[0]}.XXX`;  # $workdir will be available globally
 	cp ../python.make $workdir/;
 	echo "
 ralc:
@@ -34,7 +34,7 @@ include python.make
 }
 
 test_pip_search_ralc_is_file() {
-	workdir=`mktemp -d tmp.${FUNCNAME[0]}.XX`;  # $workdir will be available globally
+	workdir=`mktemp -d tmp.${FUNCNAME[0]}.XXX`;  # $workdir will be available globally
 	cp ../python.make $workdir/;
 	echo "include python.make" > $workdir/GNUmakefile;
 	touch $workdir/ralc
