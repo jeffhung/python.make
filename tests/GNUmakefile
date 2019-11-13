@@ -16,7 +16,7 @@ distclean: clean
 	rm -rf shunit2-$(SHUNIT2_VERSION).zip;
 
 .PHONY: test
-test: export PYTHON_CACHE_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))/.cache
+test: export PYTHON_CACHE_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST)))).cache
 test: prepare-shunit2
 	LIB_DIR=shunit2/lib shunit2/test_runner -s /bin/bash
 
