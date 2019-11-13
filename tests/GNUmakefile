@@ -18,7 +18,7 @@ distclean: clean
 .PHONY: test
 test: export PYTHON_CACHE_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))/.cache
 test: prepare-shunit2
-	./runtime_test.sh
+	LIB_DIR=shunit2/lib shunit2/test_runner -s /bin/bash
 
 # ---------------------------------------------------------------------------
 
