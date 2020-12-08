@@ -33,7 +33,7 @@
 PYTHON_RUNTIME_DIR  ?= $(abspath runtime)
 PYTHON_CACHE_DIR    ?= $(abspath .cache)
 
-VIRTUALENV_VERSION  ?= 16.0.0
+VIRTUALENV_VERSION  ?= 20.2.2
 VIRTUALENV_URL      ?= https://pypi.python.org/packages/source/v/virtualenv/virtualenv-$(VIRTUALENV_VERSION).tar.gz
 
 VIRTUALENV_RUN_BY   ?= python
